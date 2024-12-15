@@ -65,3 +65,13 @@ def insert_weapon_data(weapon_data, db):
         
     con.commit()
     con.close()
+
+def insert_class_kill(class_kill_data, db):
+    con = sqlite3.connect(db)
+    c = con.cursor()
+
+    for data in class_kill_data:
+        c.execute("""INSERT OR IGNORE INTO class_kill VALUES (?, ?, ?)""", data)
+
+    con.commit()
+    con.close()

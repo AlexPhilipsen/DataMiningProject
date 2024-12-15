@@ -71,8 +71,8 @@ class Player_Weapons:
 
 def get_game_data(gid, data, rounds):
     gid = gid
-    map = data[0]['info']['map']
-    time = data[0]['info']['total_length']
+    map = data['info']['map']
+    time = data['info']['total_length']
     blu_fc = 0
     red_fc = 0
     blu_score = 0
@@ -114,7 +114,7 @@ def get_round_data(gid, data):
     rounds = []
 
     # Create a class for each round
-    for round in data[0]['rounds']:
+    for round in data['rounds']:
         gid = gid
         round_num = round_num
         blu_dmg = round['team']['Blue']['dmg']
@@ -143,7 +143,7 @@ def get_event_data(gid, data):
     events = []
 
     # Create a class for each event
-    for round in data[0]['rounds']:
+    for round in data['rounds']:
         for i in range(len(round['events'])):
             gid = gid
             round_num = round_num
@@ -177,15 +177,15 @@ def get_player_data(gid, data, player_IDs):
     for player in player_IDs:
         gid = gid
         pid = player
-        team = data[0]['players'][player]['team']
-        k = data[0]['players'][player]['kills']
-        d = data[0]['players'][player]['deaths']
-        a = data[0]['players'][player]['assists']
-        dmg = data[0]['players'][player]['dmg']
-        medkits = data[0]['players'][player]['medkits']
-        ubers = data[0]['players'][player]['ubers']
-        hr = data[0]['players'][player]['hr']
-        healing = data[0]['players'][player]['heal']
+        team = data['players'][player]['team']
+        k = data['players'][player]['kills']
+        d = data['players'][player]['deaths']
+        a = data['players'][player]['assists']
+        dmg = data['players'][player]['dmg']
+        medkits = data['players'][player]['medkits']
+        ubers = data['players'][player]['ubers']
+        hr = data['players'][player]['hr']
+        healing = data['players'][player]['heal']
 
         players_info.append(Player(gid, pid, team, k, d, a, dmg, medkits, ubers, hr, healing))
     
@@ -208,7 +208,7 @@ def get_player_class_data(gid, data, player_IDs):
     for player in player_IDs:
         gid = gid
         pid = player
-        for specific_class in data[0]['players'][player]['class_stats']:
+        for specific_class in data['players'][player]['class_stats']:
             player_class = specific_class['type']
             time = specific_class['total_time']
             k = specific_class['kills']
@@ -236,7 +236,7 @@ def get_weapon_data(gid, data, player_IDs):
     for player in player_IDs:
         gid = gid
         pid = player
-        for specific_class in data[0]['players'][player]['class_stats']:
+        for specific_class in data['players'][player]['class_stats']:
             for weapon in specific_class['weapon']:
                 weapon_name = weapon
                 kills = specific_class['weapon'][weapon_name]['kills']
@@ -248,3 +248,17 @@ def get_weapon_data(gid, data, player_IDs):
                 pass
 
     return player_weapons
+
+def get_class_kills(data, player_IDS):
+    class_kill_data = []
+
+    for player in player_IDS:
+        player_class = data['players'][player]['class_stats'][0]['type']
+        try:
+            for kill in data['classkills'][player]:
+                class_kill_data.append((player_class, kill, data['classkills'][player][kill]))
+        except KeyError:
+            pass
+
+    return class_kill_data
+        

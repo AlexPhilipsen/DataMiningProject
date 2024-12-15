@@ -1,4 +1,4 @@
 from query_store import *
 
-# Query and store 10 different games
-query_store('log_outputs.json', 'test.db', 20)
+# Query and store 20000 different games
+store('log_outputs.json', 'test.db', 3736855, 20000)
